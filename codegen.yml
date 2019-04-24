@@ -1,0 +1,9 @@
+overwrite: true
+schema: "https://node-graphql-test-aqwa.herokuapp.com/graphql"
+documents: "**/*.graphql"
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-apollo-angular"
