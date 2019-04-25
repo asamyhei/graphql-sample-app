@@ -8,34 +8,42 @@
           <div class="row d-flex flex-column h-100 justify-content-around">
             <div class="col border border-warning d-flex justify-content-center align-items-center">
               <div>
-                <button *ngFor="let author of authors | async" class="btn btn-outline-info" (click)="clickAuthor(author.id)">{{author.name}}</button>
+                <button *ngFor="let author of authors$ | async" class="btn btn-outline-info m-1"
+                        (click)="clickAuthor(author.id)">{{author.name}}</button>
               </div>
             </div>
             <div class="col border border-warning d-flex justify-content-center align-items-center">
               <div>
-                <button *ngFor="let book of books | async" class="btn btn-outline-info">{{book.name}}</button>
+                <button *ngFor="let book of books$ | async" class="btn btn-outline-info m-1">{{book.name}}</button>
               </div>
             </div>
           </div>
         </div>
-        <div class="col">
+        <div class="col flex-column d-flex">
           INFOS
+          <div>
+            <button class="btn btn-outline-info" (click)="clickAddAuthor()">Ajouter auteur</button>
+          </div>
+          <div>
+            Last author added
+            <div *ngIf="authorAdded$ | async as author">
+              {{author.name}}
+            </div>
+          </div>
         </div>
       </div>
 
     </div>
     <div class="col">
-      <div *ngIf="author | async as author$">
-        <div>Id: {{author$.id}}</div>
-        <div>Name: {{author$.name}}</div>
-        <div>Age: {{author$.age}}</div>
-        <div *ngFor="let book of author$.books">
+      <div *ngIf="author$ | async as author">
+        <div>Id: {{author.id}}</div>
+        <div>Name: {{author.name}}</div>
+        <div>Age: {{author.age}}</div>
+        <div *ngFor="let book of author.books">
           {{book.name}}
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<button (click)="clickAddAuthor()">adazdnazdiondioazzo</button>
 <router-outlet></router-outlet>

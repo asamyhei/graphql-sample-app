@@ -10,10 +10,10 @@ import {AddAuthorGQL, Author, AuthorAddedGQL, AuthorGQL, AuthorsGQL, Book, Books
 })
 export class AppComponent {
   title = 'angular-client';
-  authors: Observable<Author[]>;
-  author: Observable<Author>;
-  books: Observable<Book[]>;
-  addAuthor: Observable<Author>;
+  authors$: Observable<Author[]>;
+  author$: Observable<Author>;
+  books$: Observable<Book[]>;
+  authorAdded$: Observable<Author>;
 
   constructor(private allBookGqlService: BooksGQL,
               private allAuthorGQLService: AuthorsGQL,
@@ -21,26 +21,26 @@ export class AppComponent {
               private addAuthorGQL: AddAuthorGQL,
               private authorAddedGQL: AuthorAddedGQL) {
 
-    this.authors = this.allAuthorGQLService
+    this.authors$ = this.allAuthorGQLService
       .watch()
       .valueChanges.pipe(map((response) => response.data.authors));
 
-    this.books = this.allBookGqlService
+    this.books$ = this.allBookGqlService
       .watch()
       .valueChanges.pipe(map((response) => response.data.books));
 
-    this.authorAddedGQL.subscribe(data => console.log('SUB' + data)).subscribe(data => console.log(data), err => console.log(err));
+    this.authorAdded$ = this.authorAddedGQL.subscribe().pipe(map(response => response.data.authorAdded));
   }
 
   clickAuthor(authorId: string) {
     console.log(authorId);
 
-    this.author = this.authorGQLService
+    this.author$ = this.authorGQLService
       .watch({id: authorId})
       .valueChanges.pipe(map((response) => response.data.author));
   }
 
   clickAddAuthor() {
-    this.addAuthorGQL.mutate({age: 12, name: 'test'}).subscribe(data => console.log('MUT' + data));
+    this.addAuthorGQL.mutate({age: 12, name: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 9)}).subscribe();
   }
 }
